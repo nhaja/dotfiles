@@ -12,7 +12,7 @@
   "terminal.integrated.enableMultiLinePasteWarning": false,
   "code-runner.runInTerminal": true,
   "github.copilot.enable": {
-    "*": false,
+    "*": true,
     "plaintext": true,
     "markdown": false,
     "scminput": false,
