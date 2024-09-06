@@ -152,8 +152,14 @@
   },
   {
     "key": "o",
-    "command": "explorer.openAndPassFocus",
-    "when": "explorerViewletFocus && !inputFocus"
+    "command": "runCommands",
+    "when": "explorerViewletFocus && !inputFocus",
+    "args": {
+      "commands": [
+        "explorer.openAndPassFocus", 
+        "workbench.action.toggleSidebarVisibility"
+      ]
+    },
   },
 
   // completion shortcuts
