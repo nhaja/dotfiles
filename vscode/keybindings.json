@@ -38,6 +38,18 @@
     "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
   },
 
+ // Traverse VSCode quick open options with vim keybindings.
+  {
+    "key": "cmd+j",
+    "command": "workbench.action.quickOpenSelectNext",
+    "when": "inQuickOpen"
+  },
+  {
+    "key": "cmd+k",
+    "command": "workbench.action.quickOpenSelectPrevious",
+    "when": "inQuickOpen"
+  },
+
   // Split Editor
   {
     "key": "ctrl+j",
@@ -47,12 +59,95 @@
     "key": "ctrl+k",
     "command": "workbench.action.moveEditorToRightGroup"
   },
+
+// VSCode terminal commands.
   {
-    "key": "ctrl+w",
-    "command": "workbench.action.closeActiveEditor"
+    "key": "cmd+n",
+    "command": "workbench.action.terminal.newInActiveWorkspace"
+  },
+  {
+    "key": "cmd+enter",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "cmd+ctrl+enter",
+    "command": "workbench.action.toggleMaximizedPanel"
+  },
+  {
+    "key": "cmd+d",
+    "command": "workbench.action.terminal.split",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+\\",
+    "command": "-workbench.action.terminal.split",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+k",
+    "command": "workbench.action.terminal.focusNextPane",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "alt+cmd+down",
+    "command": "-workbench.action.terminal.focusNextPane",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "cmd+j",
+    "command": "workbench.action.terminal.focusPreviousPane",
+    "when": "terminalFocus && terminalProcessSupported"
+  },
+  {
+    "key": "alt+cmd+up",
+    "command": "-workbench.action.terminal.focusPreviousPane",
+    "when": "terminalFocus && terminalProcessSupported"
   },
   {
     "key": "cmd+w",
-    "command": "-workbench.action.closeActiveEditor"
-  }
+    "command": "workbench.action.terminal.kill",
+    "when": "terminalFocus"
+  },
+
+  // Ensure that tab button works in vim.
+  {
+    "key": "tab",
+    "command": "tab",
+    "when": "editorTextFocus && !editorTabMovesFocus"
+  },
+  {
+    "key": "shift+tab",
+    "command": "outdent",
+    "when": "editorTextFocus && !editorTabMovesFocus"
+  },
+
+  // Explorer commands[
+  {
+    "key": "a",
+    "command": "explorer.newFolder",
+    "when": "explorerViewletFocus && !inputFocus"
+  },
+  {
+    "key": "i",
+    "command": "explorer.newFile",
+    "when": "explorerViewletFocus && !inputFocus"
+  },
+  {
+    "key": "cmd+shift+e",  // Or use another key combination of your choice
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+  {
+    "key": "cmd+shift+e",
+    "command": "workbench.view.explorer",
+    "when": "!sideBarVisible"  // Switch to Explorer only when sidebar is hidden
+  },
+  {
+    "key": "cmd+shift+e",  // Or use another key combination of your choice
+    "command": "-workbench.view.explorer"
+  },
+  {
+    "key": "d",
+    "command": "deleteFile",
+    "when": "explorerViewletFocus && !inputFocus"
+  },
 ]
