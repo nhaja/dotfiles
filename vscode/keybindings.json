@@ -151,6 +151,13 @@
     "when": "explorerViewletFocus && !inputFocus"
   },
   {
+    "key": "o",
+    "command": "explorer.openAndPassFocus",
+    "when": "explorerViewletFocus && !inputFocus"
+  },
+
+  // completion shortcuts
+  {
     "key": "cmd+u",
     "command": "-cursorUndo",
     "when": "textInputFocus"
