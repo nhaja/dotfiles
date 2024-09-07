@@ -1,16 +1,15 @@
-import os
-import sys
+"""Script to get the latest settings and update the repository accordingly."""
 
+import helper.sys_helper as sh
 import helper.vscode_helper as code
-import helper.sys_helper as sh 
+
 
 def update():
+    """Update the repository with the latest settings."""
     if code.vscode_installed():
         sh.clear_console()
         code.update_settings()
 
-def main():
-    update()
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    update()
