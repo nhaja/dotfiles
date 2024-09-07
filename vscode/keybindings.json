@@ -3,11 +3,13 @@
   // Move to the previous/next editor.
   {
     "key": "cmd+k",
-    "command": "workbench.action.nextEditor"
+    "command": "workbench.action.nextEditor",
+    "when": "vim.mode != 'Insert'"
   },
   {
     "key": "cmd+j",
-    "command": "workbench.action.previousEditor"
+    "command": "workbench.action.previousEditor",
+    "when": "vim.mode != 'Insert'"
   },
 
   // Move active editor left or right
@@ -16,14 +18,16 @@
     "command": "moveActiveEditor",
     "args": {
       "to": "left"
-    }
+    },
+    "when": "vim.mode != 'Insert'"
   },
   {
     "key": "cmd+ctrl+l",
     "command": "moveActiveEditor",
     "args": {
       "to": "right"
-    }
+    },
+    "when": "vim.mode != 'Insert'"
   },
 
   // Traverse VSCode IntelliSense suggestions with vim keybindings.
@@ -53,25 +57,30 @@
   // Split Editor
   {
     "key": "ctrl+j",
-    "command": "workbench.action.moveEditorToLeftGroup"
+    "command": "workbench.action.moveEditorToLeftGroup",
+    "when": "vim.mode != 'Insert'"
   },
   {
     "key": "ctrl+k",
-    "command": "workbench.action.moveEditorToRightGroup"
+    "command": "workbench.action.moveEditorToRightGroup",
+    "when": "vim.mode != 'Insert'"
   },
 
 // VSCode terminal commands.
   {
     "key": "cmd+n",
-    "command": "workbench.action.terminal.newInActiveWorkspace"
+    "command": "workbench.action.terminal.newInActiveWorkspace",
+    "when": "vim.mode != 'Insert'"
   },
   {
     "key": "cmd+enter",
-    "command": "workbench.action.terminal.toggleTerminal"
+    "command": "workbench.action.terminal.toggleTerminal",
+    "when": "vim.mode != 'Insert'"
   },
   {
     "key": "cmd+ctrl+enter",
-    "command": "workbench.action.toggleMaximizedPanel"
+    "command": "workbench.action.toggleMaximizedPanel",
+    "when": "vim.mode != 'Insert'"
   },
   {
     "key": "cmd+d",
@@ -134,16 +143,17 @@
   },
   {
     "key": "cmd+shift+e",  // Or use another key combination of your choice
-    "command": "workbench.action.toggleSidebarVisibility"
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "sideBarVisible && vim.mode != 'Insert'"
   },
   {
     "key": "cmd+shift+e",
     "command": "workbench.view.explorer",
-    "when": "!sideBarVisible"  // Switch to Explorer only when sidebar is hidden
+    "when": "editorFocus && vim.mode != 'Insert'"  // Switch to Explorer only when sidebar is hidden
   },
   {
     "key": "cmd+shift+e",  // Or use another key combination of your choice
-    "command": "-workbench.view.explorer"
+    "command": "-workbench.view.explorer",
   },
   {
     "key": "d",
