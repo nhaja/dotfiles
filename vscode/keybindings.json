@@ -149,7 +149,7 @@
   {
     "key": "cmd+shift+e",
     "command": "workbench.view.explorer",
-    "when": "editorFocus && vim.mode != 'Insert'"  // Switch to Explorer only when sidebar is hidden
+    "when": "(editorFocus && vim.mode != 'Insert') || !explorerViewletVisible"  // Switch to Explorer only when sidebar is hidden
   },
   {
     "key": "cmd+shift+e",  // Or use another key combination of your choice
