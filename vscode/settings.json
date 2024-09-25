@@ -1,15 +1,34 @@
 {
-  "cmake.configureOnOpen": true,
+  "editor.fontFamily": "'Monaspace Neon', monaspace",
+  "editor.fontSize": 12,
+  "editor.fontLigatures": false,
+  "editor.fontVariations": "'wght' 500, 'wdth' 100",
+  "editor.tokenColorCustomizations": {
+      "textMateRules": [
+        {
+          "scope": "comment",
+          "settings": {
+            "fontStyle": "italic"
+          },
+          "scope": "storage, entity, variable",
+          "settings": {
+            "fontStyle": ""
+          }
+        }
+      ]
+    },
+
+  "cmake.configureOnOpen": false,
   "workbench.startupEditor": "none",
-  "matlab.matlabpath": "/Applications/MATLAB_R2021b.app/bin",
-  "matlab.mlintpath": "/Applications/MATLAB_R2021b.app/bin/maci64",
+  "matlab.matlabpath": "/Applications/MATLAB_R2024b.app/bin",
+  "matlab.mlintpath": "/Applications/MATLAB_R2024b.app/bin/maci64",
   "[python]": {
     "editor.formatOnType": true,
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "modificationsIfAvailable",
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     },
   },
   "workbench.colorTheme": "GitHub Dark",
@@ -59,7 +78,6 @@
   "cmake.pinnedCommands": ["workbench.action.tasks.configureTaskRunner", "workbench.action.tasks.runTask"],
   "cmake.showOptionsMovedNotification": false,
   "python.createEnvironment.trigger": "off",
-
   "vim.easymotion": true,
   "vim.sneak": true,
   "vim.useSystemClipboard": true,
