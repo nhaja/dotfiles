@@ -5,9 +5,13 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
   let
     configuration = { pkgs, ... }: {
       # List packages installed in system profile. To search by name, run:
@@ -36,16 +40,38 @@
 
       # The platform the configuration will be used on.
       nixpkgs.hostPlatform = "aarch64-darwin";
+
+      security.pam.enableSudoTouchIdAuth = true;
+
+      users.users.nhaja.home = "/Users/nhaja";
+      home-manager.backupFileExtension = "backup";
+      nix.configureBuildUsers = true;
+      nix.useDaemon = true;
+
+      system.defaults = {
+          dock.autohide = true;
+          dock.autohide-delay = 0.0;
+          dock.autohide-time-modifier = 0.0;
+          finder.AppleShowAllFiles = true;
+        };
     };
   in
   {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#MacBook-Pro-von-Nico
     darwinConfigurations."MacBook-Pro-von-Nico" = nix-darwin.lib.darwinSystem {
-      modules = [ configuration ];
+      modules = [ 
+            configuration
+           home-manager.darwinModules.home-manager {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.nhaja = import ./home.nix;
+           }
+          ];
     };
 
     # Expose the package set, including overlays, for convenience.
     darwinPackages = self.darwinConfigurations."MacBook-Pro-von-Nico".pkgs;
   };
 }
+
