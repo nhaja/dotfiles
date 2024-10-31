@@ -1,8 +1,2 @@
-# dotfiles
-Collection of my configuration files.
-
-## Visual Studio Code
-| File |
-| --- |
-| keybindings.json |
-| settings.json |
+# Dotfiles
+Installed with [Nix Home Manager](https://nix-community.github.io/home-manager/)
