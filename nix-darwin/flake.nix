@@ -16,8 +16,9 @@
     configuration = { pkgs, ... }: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
-      environment.systemPackages =
-        [ pkgs.vim
+      environment.systemPackages = [ 
+          pkgs.vim
+          pkgs.direnv
         ];
 
       # Auto upgrade nix package and the daemon service.
@@ -54,12 +55,22 @@
           dock.autohide-time-modifier = 0.0;
           finder.AppleShowAllFiles = true;
         };
+
+      homebrew.enable = true;
+      homebrew.casks = [
+          "kitty"
+          "wireshark"
+        ];
+        homebrew.brews = [
+          "imagemagick"
+        ];
     };
   in
   {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#MacBook-Pro-von-Nico
     darwinConfigurations."MacBook-Pro-von-Nico" = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin";
       modules = [ 
             configuration
            home-manager.darwinModules.home-manager {
