@@ -28,7 +28,6 @@
     ".config/nix-darwin".source = ~/dotfiles/nix-darwin;
     ".config/tmux".source = ~/dotfiles/tmux;
     ".config/kitty".source = ~/dotfiles/kitty;
-    ".config/iterm2".source = ~/dotfiles/iterm2;
   };
 
   home.sessionVariables = {
