@@ -28,6 +28,7 @@
     ".config/nix-darwin".source = ~/dotfiles/nix-darwin;
     ".config/tmux".source = ~/dotfiles/tmux;
     ".config/kitty".source = ~/dotfiles/kitty;
+    ".config/starship".source = ~/dotfiles/starship;
   };
 
   home.sessionVariables = {
