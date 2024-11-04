@@ -49,14 +49,17 @@ fi
 source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-rosenv() {
-    local env_name="ros2"
+rosenv_tam() {
+    echo "Activating ROS2 environment ..."
+    local env_name="ros2_tam"
     local active_env=$(conda info | grep "active environment" | awk '{print $4}')
 
     if [[ "$active_env" == "$env_name" ]]; then
+        echo "Environment $env_name is already active, deactivating ..."
       mamba deactivate
     else
-      mamba activate ros2
+        echo "Activating environment $env_name ..."
+      mamba activate $env_name
 
       export ROS_DOMAIN_ID=68
       export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
@@ -71,6 +74,24 @@ rosenv() {
       # export Python_FIND_STRATEGY=LOCATION
       # export Python3_FIND_STRATEGY=LOCATION
     fi
+}
+
+docker_tam() {
+    echo "Activating TAM Docker context ..."
+    local lima_vm_name="ros2_tam"
+    local lima_docker_context="lima-$lima_vm_name"
+    local docker_context=$(docker context ls --format '{{.Name}}' | grep "$lima_docker_context")
+    local lima_vm_status=$(limactl list | grep "$lima_vm_name" | awk '{print $2}')
+    if [[ "$lima_vm_status" == "Stopped" ]]; then
+        echo "Starting Lima VM $lima_vm_name ..."
+      limactl start $lima_vm_name
+    fi
+        
+    if [[ -z "$docker_context" ]]; then
+        echo "Creating Docker context for Lima VM $lima_vm_name ..."
+      docker context create lima-${lima_vm_name} --docker "host=unix:///Users/nhaja/.lima/$lima_vm_name/sock/docker.sock"
+    fi
+    docker context use lima-${lima_vm_name}
 }
 
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
