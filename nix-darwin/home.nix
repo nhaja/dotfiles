@@ -28,7 +28,7 @@
     ".config/nix-darwin".source = ~/dotfiles/nix-darwin;
     ".config/tmux".source = ~/dotfiles/tmux;
     ".config/kitty".source = ~/dotfiles/kitty;
-    ".config/starship".source = ~/dotfiles/starship;
+    ".p10k.zsh".source = ~/dotfiles/powerlevel10k/.p10k.zsh;
   };
 
   home.sessionVariables = {
