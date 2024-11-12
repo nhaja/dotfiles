@@ -57,4 +57,5 @@ require("lazy").setup({
 	require("plugins.markdown-preview"),
 	require("plugins.molten"),
 	require("plugins.jupytext"),
+	require("plugins.remote"),
 })
