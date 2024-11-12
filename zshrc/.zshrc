@@ -64,7 +64,6 @@ rosenv_tam() {
       export ROS_DOMAIN_ID=68
       export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
-      source ~/ros/iac_ws/install/setup.zsh
 
       # export CYCLONDEDDS_URI=/Users/nhaja/.ros_config/cyclonedds.xml
 
@@ -76,6 +75,21 @@ rosenv_tam() {
     fi
 }
 
+rosenv_ssa() {
+    echo "Activating ROS2 environment ..."
+    local env_name="ros1_ssa"
+    local active_env=$(conda info | grep "active environment" | awk '{print $4}')
+
+    if [[ "$active_env" == "$env_name" ]]; then
+        echo "Environment $env_name is already active, deactivating ..."
+      mamba deactivate
+    else
+        echo "Activating environment $env_name ..."
+      mamba activate $env_name
+
+      source ~/ros/ssa_ws/install/setup.zsh
+    fi
+}
 docker_tam() {
     echo "Activating TAM Docker context ..."
     local lima_vm_name="ros2_tam"
@@ -111,3 +125,6 @@ source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export NIX_CONF_DIR=/Users/nhaja/dotfiles/nix
+export PATH=/run/current-system/sw/bin:$PATH
+
+export EDITOR=nvim
