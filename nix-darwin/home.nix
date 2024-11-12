@@ -22,13 +22,13 @@
   # Manage dotfiles with Home Manager
   home.file = {
     ".zshrc".source = ~/dotfiles/zshrc/.zshrc;
+    ".p10k.zsh".source = ~/dotfiles/powerlevel10k/.p10k.zsh;
     ".config/nvim".source = ~/dotfiles/nvim;
     ".config/wezterm".source = ~/dotfiles/wezterm;
     ".config/nix".source = ~/dotfiles/nix;
     ".config/nix-darwin".source = ~/dotfiles/nix-darwin;
     ".config/tmux".source = ~/dotfiles/tmux;
     ".config/kitty".source = ~/dotfiles/kitty;
-    ".p10k.zsh".source = ~/dotfiles/powerlevel10k/.p10k.zsh;
   };
 
   home.sessionVariables = {
