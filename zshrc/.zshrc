@@ -1,3 +1,14 @@
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+  tmux attach-session -t default || tmux new-session -s default
+fi
+
+tmux-window-name() {
+	(${TMUX_PLUGIN_MANAGER_PATH}tmux-window-name/scripts/rename_session_windows.py &)
+}
+add-zsh-hook chpwd tmux-window-name
+
+# eval "$(zellij setup --generate-auto-start zsh)"
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -24,7 +35,6 @@ export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 export CMAKE_C_COMPILER="/opt/homebrew/opt/llvm/bin/clang"
 export CMAKE_CXX_COMPILER="/opt/homebrew/opt/llvm/bin/clang++"
-
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -108,16 +118,6 @@ docker_tam() {
     docker context use lima-${lima_vm_name}
 }
 
-if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
-  tmux attach-session -t default || tmux new-session -s default
-fi
-
-alias vi=nvim
-
-#tmux-window-name() {
-#	($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
-#}
-# add-zsh-hook chpwd tmux-window-name
 
 source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 
@@ -125,6 +125,13 @@ source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export NIX_CONF_DIR=/Users/nhaja/dotfiles/nix
-export PATH=/run/current-system/sw/bin:$PATH
+
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+
+export PATH=/opt/homebrew/Cellar/qemu/9.1.2/bin:$PATH
 
 export EDITOR=nvim
+
+alias vi=nvim
