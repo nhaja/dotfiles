@@ -2,7 +2,7 @@
   description = "Example Darwin system flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/25.05-pre";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
@@ -68,21 +68,21 @@
   in
   {
     # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#MacBook-Pro-von-Nico
-    darwinConfigurations."MacBook-Pro-von-Nico" = nix-darwin.lib.darwinSystem {
+    # $ darwin-rebuild build --flake .#Nicos-MacBook-Pro
+    darwinConfigurations."Nicos-MacBook-Pro" = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [ 
-            configuration
-           home-manager.darwinModules.home-manager {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.nhaja = import ./home.nix;
-           }
-          ];
+         configuration
+         home-manager.darwinModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.nhaja = import ./home.nix;
+         }
+      ];
     };
 
     # Expose the package set, including overlays, for convenience.
-    darwinPackages = self.darwinConfigurations."MacBook-Pro-von-Nico".pkgs;
+    darwinPackages = self.darwinConfigurations."Nicos-MacBook-Pro".pkgs;
   };
 }
 

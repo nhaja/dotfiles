@@ -14,7 +14,7 @@
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 
   home.packages = [
   ]; 
@@ -29,6 +29,9 @@
     ".config/nix-darwin".source = ~/dotfiles/nix-darwin;
     ".config/tmux".source = ~/dotfiles/tmux;
     ".config/kitty".source = ~/dotfiles/kitty;
+    ".config/zellij".source = ~/dotfiles/zellij;
+    ".config/aerospace".source = ~/dotfiles/aerospace;
+    ".lima/arm64/lima.yaml".source = ~/dotfiles/lima/templates/ros_humble/lima.yaml;
   };
 
   home.sessionVariables = {
@@ -36,7 +39,7 @@
 
   home.sessionPath = [
     "/run/current-system/sw/bin"
-    "$HOME/.nix-profile/bin"
+      "$HOME/.nix-profile/bin"
   ];
   programs.home-manager.enable = true;
   programs.zsh = {
