@@ -1,16 +1,3 @@
-require("lib.getOS")
-
--- Modifier keys default layout (CTRL, SUPER, ALT)
-_G["modifier_left"] = "<C"
-_G["modifier_mid"] = "<D"
-_G["modifier_right"] = "<M"
--- Modifier keys layout for OSX (CTRL, OPT/ALT, CMD)
-if getOS() == "OSX" then
-	_G["modifier_left"] = "<C"
-	_G["modifier_mid"] = "<M"
-	_G["modifier_right"] = "<D"
-end
-
 local uv = vim.loop
 
 vim.api.nvim_create_autocmd({ "VimEnter", "VimLeave" }, {

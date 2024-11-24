@@ -318,11 +318,6 @@ return {
 		})
 
 		vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
-		vim.keymap.set(
-			"n",
-			_G["modifier_right"] .. "-e>",
-			":Neotree toggle position=right<CR>",
-			{ noremap = true, silent = true }
-		)
+		vim.keymap.set("n", "<C-e>", ":Neotree toggle position=right<CR>", { noremap = true, silent = true })
 	end,
 }

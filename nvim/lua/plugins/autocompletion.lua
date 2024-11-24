@@ -3,12 +3,12 @@ return { -- Autocompletion
 		"github/copilot.vim",
 		vim.keymap.set(
 			"i",
-			_G["modifier_right"] .. "-u>",
+			"<C-u>",
 			'copilot#Accept("<CR>")',
 			{ silent = true, expr = true, replace_keycodes = false }
 		),
-		vim.keymap.set("i", _G["modifier_right"] .. "-d>", "<Plug>(copilot-dismiss)"),
-		vim.keymap.set("i", _G["modifier_right"] .. "-i>", "<Plug>(copilot-accept-word)"),
+		vim.keymap.set("i", "<C-d>", "<Plug>(copilot-dismiss)"),
+		vim.keymap.set("i", "<C-i>", "<Plug>(copilot-accept-word)"),
 	},
 	{
 		"hrsh7th/nvim-cmp",
@@ -85,10 +85,10 @@ return { -- Autocompletion
 				--     documentation = cmp.config.window.bordered(),
 				-- },
 				mapping = cmp.mapping.preset.insert({
-					[_G["modifier_right"] .. "-j>"] = cmp.mapping.select_next_item(), -- Select the [n]ext item
-					[_G["modifier_right"] .. "-k>"] = cmp.mapping.select_prev_item(), -- Select the [p]revious item
+					["<C-j>"] = cmp.mapping.select_next_item(), -- Select the [n]ext item
+					["<C-k>"] = cmp.mapping.select_prev_item(), -- Select the [p]revious item
 					["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept the completion with Enter.
-					[_G["modifier_right"] .. "-c>"] = cmp.mapping.complete({}), -- Manually trigger a completion from nvim-cmp.
+					["<C-c>"] = cmp.mapping.complete({}), -- Manually trigger a completion from nvim-cmp.
 
 					-- Think of <c-l> as moving to the right of your snippet expansion.
 					--  So if you have a snippet that's like:
@@ -98,12 +98,12 @@ return { -- Autocompletion
 					--
 					-- <c-l> will move you to the right of each of the expansion locations.
 					-- <c-h> is similar, except moving you backwards.
-					[_G["modifier_right"] .. "-l>"] = cmp.mapping(function()
+					["<C-l>"] = cmp.mapping(function()
 						if luasnip.expand_or_locally_jumpable() then
 							luasnip.expand_or_jump()
 						end
 					end, { "i", "s" }),
-					[_G["modifier_right"] .. "-h>"] = cmp.mapping(function()
+					["<C-h>"] = cmp.mapping(function()
 						if luasnip.locally_jumpable(-1) then
 							luasnip.jump(-1)
 						end

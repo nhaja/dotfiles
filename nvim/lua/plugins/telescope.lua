@@ -48,9 +48,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
       defaults = {
         mappings = {
           i = {
-            [_G["modifier_right"] .. "-k>"] = require("telescope.actions").move_selection_previous,
-            [_G["modifier_right"] .. "-j>"] = require("telescope.actions").move_selection_next,
-            [_G["modifier_right"] .. "-o>"] = require("telescope.actions").select_default,
+            ["<C-k>"] = require("telescope.actions").move_selection_previous,
+            ["<C-j>"] = require("telescope.actions").move_selection_next,
+            ["<C-o>"] = require("telescope.actions").select_default,
           },
         },
       },

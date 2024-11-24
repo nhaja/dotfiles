@@ -23,7 +23,7 @@ return {
 					previewer = conf.file_previewer({}),
 					sorter = conf.generic_sorter({}),
 					attach_mappings = function(prompt_buffer_nr, map)
-						map("i", _G["modifier_right"] .. "-r>", function()
+						map("i", "<C-r>", function()
 							local selected_entry = require("telescope.actions.state").get_selected_entry()
 							local current_picker =
 								require("telescope.actions.state").get_current_picker(prompt_buffer_nr)
@@ -42,7 +42,7 @@ return {
 		vim.keymap.set("n", "<leader>a", function()
 			harpoon:list():add()
 		end)
-		vim.keymap.set("n", _G["modifier_right"] .. "-f>", function()
+		vim.keymap.set("n", "<C-f>", function()
 			toggle_telescope(harpoon:list())
 		end, { desc = "Open harpoon window" })
 	end,

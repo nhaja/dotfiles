@@ -9,7 +9,7 @@ return {
 
 		-- Useful status updates for LSP.
 		-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-		{ "j-hui/fidget.nvim", opts = {} },
+		{ "j-hui/fidget.nvim",       opts = {} },
 
 		-- Allows extra capabilities provided by nvim-cmp
 		"hrsh7th/cmp-nvim-lsp",
@@ -173,9 +173,15 @@ return {
 					},
 				},
 			},
+			clangd = {
+				capabilities = {
+					offset_encoding = { "utf-16" },
+				},
+			},
 			dockerls = {},
 			docker_compose_language_service = {},
 			pylsp = {
+				filetypes = { "python", "py", "ipynb" },
 				settings = {
 					pylsp = {
 						plugins = {
