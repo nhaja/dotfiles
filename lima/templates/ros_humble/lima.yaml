@@ -1,0 +1,162 @@
+# TODO:
+# - Add docker installation to use this as docker daemon
+# - Add nvim config
+# - Add tmux installation and config
+# - Add zsh installation, zshrc config, oh-my-zsh and powerlevel10k
+# - Add kitty terminal installation and config
+
+vmType: "vz"
+
+cpus: 10
+memory: 28GiB
+disk: 100GiB
+
+images:
+  # Try to use release-yyyyMMdd image if available. Note that release-yyyyMMdd will be removed after several months.
+  - location: "https://cloud-images.ubuntu.com/releases/22.04/release-20241002/ubuntu-22.04-server-cloudimg-amd64.img"
+    arch: "x86_64"
+    digest: "sha256:55c687a9a242fab7b0ec89ac69f9def77696c4e160e6f640879a0b0031a08318"
+  - location: "https://cloud-images.ubuntu.com/releases/22.04/release-20241002/ubuntu-22.04-server-cloudimg-arm64.img"
+    arch: "aarch64"
+    digest: "sha256:2edb369b85141fbeff6c87c7d92e08f315ec236f639235e35429e4930d98e2de"
+  - location: "https://cloud-images.ubuntu.com/releases/22.04/release-20241002/ubuntu-22.04-server-cloudimg-riscv64.img"
+    arch: "riscv64"
+    digest: "sha256:6fa917df807c1ef434a99b18d930b1bbb7bf56a77977d83163766066dd74ecfa"
+  - location: "https://cloud-images.ubuntu.com/releases/22.04/release-20241002/ubuntu-22.04-server-cloudimg-armhf.img"
+    arch: "armv7l"
+    digest: "sha256:35e952e46c5659233f18cf866e9b998f142c29f6391c10615b5f2470d0463109"
+  # Fallback to the latest release image.
+  # Hint: run `limactl prune` to invalidate the cache
+  - location: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
+    arch: "x86_64"
+  - location: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-arm64.img"
+    arch: "aarch64"
+  - location: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-riscv64.img"
+    arch: "riscv64"
+  - location: "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-armhf.img"
+    arch: "armv7l"
+
+provision:
+  - mode: system
+    script: |
+      echo "nameserver" | passwd --stdin
+
+  - mode: system
+    script: |
+      apt-get install -y kitty \
+      && apt-get install -y neovim \
+      && apt-get install -y zsh \
+
+  ## ROS Humble Installation
+  # Set locale
+  - mode: system
+    script: |
+      apt update && apt install locales \
+      && locale-gen en_US en_US.UTF-8 \
+      && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 \
+      && export LANG=en_US.UTF-8
+  # Setup Sources
+  - mode: system
+    script: |
+      apt install software-properties-common \
+      && add-apt-repository universe \
+      && apt update && apt install curl -y \
+      && curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
+      && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+  # Install ROS2 packages
+  - mode: system
+    script: |
+      apt update \
+      && apt install -y ros-humble-desktop \
+      && apt install -y ros-dev-tools
+
+  # VCAN Setup
+  - mode: system
+    script: |
+      modprobe vcan \
+      && ip link add dev can0 type vcan \
+      && ip link set up can0 \
+      && ip link property add dev can0 altname can1 \
+      && ip link property add dev can0 altname can0 \
+      && ip link property add dev can0 altname vcan0
+
+  # Multicast Setup
+  - mode: system
+    script: |
+      ip l set lo multicast on
+
+  # Increase UDP Buffersize
+  - mode: system
+    script: |
+      sysctl -w net.core.rmem_max=8388608 \
+      && sysctl -w net.core.rmem_default=8388608
+
+  ## Docker Setup
+  - mode: system
+    # This script defines the host.docker.internal hostname when hostResolver is disabled.
+    # It is also needed for lima 0.8.2 and earlier, which does not support hostResolver.hosts.
+    # Names defined in /etc/hosts inside the VM are not resolved inside containers when
+    # using the hostResolver; use hostResolver.hosts instead (requires lima 0.8.3 or later).
+    script: |
+      #!/bin/sh
+      sed -i 's/host.lima.internal.*/host.lima.internal host.docker.internal/' /etc/hosts
+  - mode: system
+    script: |
+      #!/bin/bash
+      set -eux -o pipefail
+      command -v docker >/dev/null 2>&1 && exit 0
+      export DEBIAN_FRONTEND=noninteractive
+      curl -fsSL https://get.docker.com | sh
+      # NOTE: you may remove the lines below, if you prefer to use rootful docker, not rootless
+      systemctl disable --now docker
+      apt-get install -y uidmap dbus-user-session
+  - mode: user
+    script: |
+      #!/bin/bash
+      set -eux -o pipefail
+      systemctl --user start dbus
+      dockerd-rootless-setuptool.sh install
+      docker context use rootless
+probes:
+  - script: |
+      #!/bin/bash
+      set -eux -o pipefail
+      if ! timeout 30s bash -c "until command -v docker >/dev/null 2>&1; do sleep 3; done"; then
+        echo >&2 "docker is not installed yet"
+        exit 1
+      fi
+      if ! timeout 30s bash -c "until pgrep rootlesskit; do sleep 3; done"; then
+        echo >&2 "rootlesskit (used by rootless docker) is not running"
+        exit 1
+      fi
+    hint: See "/var/log/cloud-init-output.log" in the guest
+
+hostResolver:
+  hosts:
+    host.docker.internal: host.lima.internal
+
+portForwards:
+  - guestSocket: "/var/run/docker.sock"
+    hostSocket: "{{.Dir}}/sock/docker.sock"
+
+rosetta:
+  enabled: true
+  binfmt: true
+
+mounts:
+  - location: "~"
+    writable: true
+  - location: "/tmp/lima"
+    writable: true
+
+networks:
+  - vzNAT: true
+  - lima: user-v2
+
+message: |
+  To run `docker` on the host (assumes docker-cli is installed), run the following commands:
+  ------
+  docker context create lima-{{.Name}} --docker "host=unix://{{.Dir}}/sock/docker.sock"
+  docker context use lima-{{.Name}}
+  docker run hello-world
+  ------
