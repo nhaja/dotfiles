@@ -93,10 +93,6 @@ provision:
 
   ## Docker Setup
   - mode: system
-    # This script defines the host.docker.internal hostname when hostResolver is disabled.
-    # It is also needed for lima 0.8.2 and earlier, which does not support hostResolver.hosts.
-    # Names defined in /etc/hosts inside the VM are not resolved inside containers when
-    # using the hostResolver; use hostResolver.hosts instead (requires lima 0.8.3 or later).
     script: |
       #!/bin/sh
       sed -i 's/host.lima.internal.*/host.lima.internal host.docker.internal/' /etc/hosts
@@ -105,31 +101,16 @@ provision:
       #!/bin/bash
       set -eux -o pipefail
       command -v docker >/dev/null 2>&1 && exit 0
+      if [ ! -e /etc/systemd/system/docker.socket.d/override.conf ]; then
+        mkdir -p /etc/systemd/system/docker.socket.d
+        # Alternatively we could just add the user to the "docker" group, but that requires restarting the user session
+        cat <<-EOF >/etc/systemd/system/docker.socket.d/override.conf
+        [Socket]
+        SocketUser={{.User}}
+      EOF
+      fi
       export DEBIAN_FRONTEND=noninteractive
       curl -fsSL https://get.docker.com | sh
-      # NOTE: you may remove the lines below, if you prefer to use rootful docker, not rootless
-      systemctl disable --now docker
-      apt-get install -y uidmap dbus-user-session
-  - mode: user
-    script: |
-      #!/bin/bash
-      set -eux -o pipefail
-      systemctl --user start dbus
-      dockerd-rootless-setuptool.sh install
-      docker context use rootless
-probes:
-  - script: |
-      #!/bin/bash
-      set -eux -o pipefail
-      if ! timeout 30s bash -c "until command -v docker >/dev/null 2>&1; do sleep 3; done"; then
-        echo >&2 "docker is not installed yet"
-        exit 1
-      fi
-      if ! timeout 30s bash -c "until pgrep rootlesskit; do sleep 3; done"; then
-        echo >&2 "rootlesskit (used by rootless docker) is not running"
-        exit 1
-      fi
-    hint: See "/var/log/cloud-init-output.log" in the guest
 
 hostResolver:
   hosts:
@@ -151,7 +132,7 @@ mounts:
 
 networks:
   - vzNAT: true
-  - lima: user-v2
+  - lima: bridged
 
 message: |
   To run `docker` on the host (assumes docker-cli is installed), run the following commands:
