@@ -2,11 +2,6 @@ if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
   tmux attach-session -t default || tmux new-session -s default
 fi
 
-tmux-window-name() {
-	(${TMUX_PLUGIN_MANAGER_PATH}tmux-window-name/scripts/rename_session_windows.py &)
-}
-add-zsh-hook chpwd tmux-window-name
-
 # eval "$(zellij setup --generate-auto-start zsh)"
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -73,15 +68,6 @@ rosenv_tam() {
 
       export ROS_DOMAIN_ID=68
       export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-
-
-      # export CYCLONDEDDS_URI=/Users/nhaja/.ros_config/cyclonedds.xml
-
-      # export Python_EXECUTABLE=${CONDA_PREFIX}/bin/python
-      # export Python3_EXECUTABLE=${CONDA_PREFIX}/bin/python
-      # export PYTHON_EXECUTABLE=${CONDA_PREFIX}/bin/python
-      # export Python_FIND_STRATEGY=LOCATION
-      # export Python3_FIND_STRATEGY=LOCATION
     fi
 }
 
