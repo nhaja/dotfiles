@@ -75,6 +75,10 @@ run = 'layout floating'
 if.app-name-regex-substring = 'appcleaner'
 run = 'layout floating'
 
+[[on-window-detected]]
+if.app-name-regex-substring = 'microsoft remote desktop'
+run = 'layout floating'
+
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
@@ -108,6 +112,7 @@ run = 'layout floating'
 alt-enter = 'fullscreen'
 alt-f = 'layout floating'
 alt-t = 'layout tiles'
+cmd-w = 'close'
 
 ctrl-shift-h = 'join-with left'
 ctrl-shift-j = 'join-with down'
