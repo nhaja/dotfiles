@@ -41,7 +41,6 @@ require("lazy").setup({
 	require("plugins.image"),
 	require("plugins.img-clip"),
 	require("plugins.render-markdown"),
-	require("plugins.markdown-preview"),
 	require("plugins.molten"),
 	require("plugins.jupytext"),
 	require("plugins.remote"),
