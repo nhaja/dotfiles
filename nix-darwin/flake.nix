@@ -5,13 +5,9 @@
     nixpkgs.url = "github:NixOS/nixpkgs/25.05-pre";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs }:
   let
     configuration = { pkgs, ... }: {
       # List packages installed in system profile. To search by name, run:
@@ -45,7 +41,6 @@
       security.pam.enableSudoTouchIdAuth = true;
 
       users.users.nhaja.home = "/Users/nhaja";
-      home-manager.backupFileExtension = "backup";
       nix.configureBuildUsers = true;
       nix.useDaemon = true;
 
@@ -57,7 +52,7 @@
         };
 
       homebrew.enable = true;
-      homebrew.casks = [
+      homebrew.casks = [ 
           "kitty"
           "wireshark"
         ];
@@ -73,11 +68,6 @@
       system = "aarch64-darwin";
       modules = [ 
          configuration
-         home-manager.darwinModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.nhaja = import ./home.nix;
-         }
       ];
     };
 
