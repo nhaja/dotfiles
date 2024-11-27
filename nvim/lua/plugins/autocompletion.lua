@@ -9,6 +9,7 @@ return { -- Autocompletion
 		),
 		vim.keymap.set("i", "<C-d>", "<Plug>(copilot-dismiss)"),
 		vim.keymap.set("i", "<C-i>", "<Plug>(copilot-accept-word)"),
+		vim.keymap.del("i", "<Tab>", { noremap = true }),
 	},
 	{
 		"hrsh7th/nvim-cmp",
