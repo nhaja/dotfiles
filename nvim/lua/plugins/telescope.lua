@@ -46,6 +46,17 @@ return { -- Fuzzy Finder (files, lsp, etc)
       --  All the info you're looking for is in `:help telescope.setup()`
       --
       defaults = {
+        layout_strategy = "vertical",
+        layout_config = {
+          vertical = {
+            prompt_position = "top",
+            mirror = true,
+          },
+          height = 0.9,
+          width = 0.8,
+          preview_height = 0.4,
+        },
+        sorting_strategy = "ascending",
         mappings = {
           i = {
             ["<C-k>"] = require("telescope.actions").move_selection_previous,
