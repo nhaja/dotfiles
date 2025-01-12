@@ -172,6 +172,11 @@ cmd-shift-enter = 'mode apps'
 
 ctrl-cmd-t = 'exec-and-forget open -a /Applications/kitty.app'
 
+[workspace-to-monitor-force-assignment]
+1 = 'main'
+2 = 'secondary'
+3 = 'tertiary'
+
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
