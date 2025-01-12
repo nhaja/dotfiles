@@ -1,0 +1,11 @@
+theme = "NH"
+font-family = "JetBrains Mono Bold"
+font-feature = -calt
+
+font-size = 14.0
+background-blur-radius = 20
+mouse-hide-while-typing = true
+window-decoration = true
+
+confirm-close-surface = false
+quit-after-last-window-closed = true
