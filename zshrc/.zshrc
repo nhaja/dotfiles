@@ -121,3 +121,20 @@ export PATH=/opt/homebrew/Cellar/qemu/9.1.2/bin:$PATH
 export EDITOR=nvim
 
 alias vi=nvim
+alias "cat=bat"
+
+alias ls="eza --icons --git"
+alias ll="eza -l --icons --git -a"
+alias lt="eza --tree --level=2 --long --icons --git"
+
+eval "$(fzf --zsh)"
+
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
+export FZF_DEFAULT_OPTS='--height 50% --layout=reverse --border --color=hl:#d7005f --preview-window=down'
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always -n --line-range :500 {}'"
+export FZF_TMUX_OPTS=' -p90%,70%'
+# Lima BEGIN
+# Make sure iptables and mount.fuse3 are available
+PATH="$PATH:/usr/sbin:/sbin"
+export PATH
+# Lima END
